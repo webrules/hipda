@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E41400332D367A1B00E7E0F4 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E41400322D367A1B00E7E0F4 /* SwiftSoup */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E4C5DE762D2F701A0012D53B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E41400332D367A1B00E7E0F4 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = HiPda;
 			packageProductDependencies = (
+				E41400322D367A1B00E7E0F4 /* SwiftSoup */,
 			);
 			productName = HiPda;
 			productReference = E4C5DE652D2F70170012D53B /* HiPda.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = E4C5DE5C2D2F70170012D53B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E41400312D367A1B00E7E0F4 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4C5DE662D2F70170012D53B /* Products */;
 			projectDirPath = "";
@@ -558,6 +567,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E41400312D367A1B00E7E0F4 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E41400322D367A1B00E7E0F4 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E41400312D367A1B00E7E0F4 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E4C5DE5D2D2F70170012D53B /* Project object */;
 }

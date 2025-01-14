@@ -46,6 +46,9 @@ struct LoginView: View {
             .background(Color.blue)
             .cornerRadius(8)
             .disabled(isLoading)
+            .onAppear {
+                checkCookies()
+            }
             
             // Add NavigationLink separately
             NavigationLink(
@@ -64,6 +67,22 @@ struct LoginView: View {
         }
     }
     
+private func checkCookies() {
+    if let cookies = HTTPCookieStorage.shared.cookies {
+        for cookie in cookies {
+            // Check for your specific login cookie
+            if cookie.domain.contains("4d4y.com") && cookie.name == "cdb_auth" {
+                // Check if cookie is still valid
+                if let expiresDate = cookie.expiresDate, expiresDate > Date() {
+                    DispatchQueue.main.async {
+                        self.isLoginActive = true
+                    }
+                    return
+                }
+            }
+        }
+    }
+}
 
 private func submitLogin() async {
     // Reset error state
