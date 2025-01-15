@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftSoup
 import Foundation
 
 struct TopicListView: View {
@@ -35,6 +36,8 @@ struct TopicListView: View {
                 }
             }
             .onAppear {
+                //print(topic.title)
+                //print(topics.last?.title ?? "nothing")
                 if topic == topics.last {
                     loadMoreTopics()
                 }
@@ -67,13 +70,13 @@ struct TopicListView: View {
                 let session = URLSession(configuration: config)
             
                 let cookies = HTTPCookieStorage.shared.cookies(for: url)
-                for cookie in cookies ?? [] {
-                    print("Cookie Name: \(cookie.name), Value: \(cookie.value)")
-                }
+//                for cookie in cookies ?? [] {
+//                    print("Cookie Name: \(cookie.name), Value: \(cookie.value)")
+//                }
                 
-                print("network request started")
+//                print("network request started")
                 let (data, _) = try await session.data(from: url)
-                print("network request completed")
+//                print("network request completed")
                 
                 // Use CFStringConvertEncodingToNSStringEncoding for GBK
                 let gbkEncoding = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue))
@@ -81,7 +84,9 @@ struct TopicListView: View {
                     let newTopics = try parseTopics(from: htmlString)
                     await MainActor.run {
                         self.topics.append(contentsOf: newTopics)
-                        self.currentPage += 1
+                        print(self.currentPage)
+                        self.currentPage = self.currentPage + 1
+                        print(self.currentPage)
                     }
                 }
             } catch {
@@ -94,9 +99,20 @@ struct TopicListView: View {
         }
     }
     
+    func decodeHTMLEntities(_ string: String) -> String {
+        do {
+            let decodedString = try Entities.unescape(string)
+//            print("After:" + decodedString)
+            return decodedString
+        } catch {
+            print("Failed to decode HTML entities: \(error.localizedDescription)")
+            return string
+        }
+    }
+    
     private func parseTopics(from html: String) throws -> [Topic] {
-        let pattern = #"<a href="viewthread\.php\?tid=(\d+)&amp;extra=page%3D1">(.*?)</a>"#
-        
+        let pattern = #"<a href="viewthread\.php\?tid=(\d+)&amp;extra=page%3D\#(currentPage)">(.*?)</a>"#
+        //let pattern = #"<a href="viewthread\.php\?tid=(\d+)&amp;(.*?)>(.*?)</a>"#
         let regex = try NSRegularExpression(pattern: pattern, options: .dotMatchesLineSeparators)
         
         let matches = regex.matches(in: html, range: NSRange(html.startIndex..., in: html))
@@ -110,7 +126,9 @@ struct TopicListView: View {
             }
             
             let link = String(html[linkRange])
-            let title = String(html[titleRange])
+//            print(link)
+//            print("before:" + String(html[titleRange]))
+            let title = decodeHTMLEntities(String(html[titleRange]))
             
             // Ensure we have valid values before creating Topic
             guard !link.isEmpty, !title.isEmpty else {
