@@ -106,7 +106,7 @@ struct PostListView: View {
                 )
                 .font(.system(size: 16)) // Set font size
                 .placeholder(when: replyText.isEmpty) {
-                    Text("Type your reply...\n") // Placeholder text with \n
+                    Text("Type your reply...") // Placeholder text with \n
                         .foregroundColor(.gray)
                         .padding(.leading, 4)
                         .padding(.top, 8)
@@ -116,7 +116,7 @@ struct PostListView: View {
             Button(action: {
                 submitReply()
             }) {
-                Text("Reply")
+                Text("回复")
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.blue)
